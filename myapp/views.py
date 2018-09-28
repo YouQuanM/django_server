@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import auth
 
 # Create your views here.
@@ -65,6 +65,17 @@ def log_in(request):
         response['error_num'] = 1
 
     return JsonResponse(response)
+
+def log_out(request):
+    response = {}
+    auth.logout(request)
+    response['msg'] = 'success'
+    response['error_num'] = 0
+
+    return JsonResponse(response)
+
+
+
 
 # 图书接口（以后删除，仅作为测试使用）start
 
