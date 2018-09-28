@@ -22,9 +22,22 @@
               {{ item.fields.article_body }}
             </div>
             <div class="article_operate">
-              <div>
-                <el-button type="danger" icon="el-icon-delete" @click="deleteArticle(item.pk)" circle></el-button>
-              </div>
+              <el-row>
+                <el-col :span="6">
+                    <el-button type="primary" icon="el-icon-caret-top" circle></el-button>
+                </el-col>
+                <el-col :span="6">
+                    <el-button type="primary" icon="el-icon-edit" circle></el-button>
+                </el-col>
+                <el-col :span="6">
+                  <el-button type="danger" icon="el-icon-delete" @click="deleteArticle(item.pk)" circle></el-button>
+                </el-col>
+                <el-col :span="6">
+                  <div class="grid-content bg-purple">
+                    {{ item.fields.add_time }}
+                  </div>
+                </el-col>
+              </el-row>
             </div>
           </div>
         </el-row>
@@ -44,7 +57,8 @@
 <script>/* eslint-disable */
   import axios from 'axios'
   import { AJAXURL } from '../define.js'
-import ElRow from "element-ui/packages/row/src/row";
+  import ElRow from "element-ui/packages/row/src/row";
+  let _ = require('lodash');
 export default {
   components: {ElRow},
   name: 'article_add',
@@ -64,6 +78,9 @@ export default {
       axios.get(AJAXURL + 'show_articles').then(function (res) {
         let response = res.data;
         if (response.error_num == 0){
+          _.forEach(response.list,function (item) {
+            item.fields.add_time = item.fields.add_time.slice(0,10)
+          });
           that.article_list = response.list
         }else {
           that.$message.error('查找失败')
@@ -86,6 +103,8 @@ export default {
            if (response.error_num == 0){
              that.$message.success('发布成功');
              that.showAllArticals();
+             that.input_title = '';
+             that.input_body = '';
            }else {
              that.$message.error('发布失败，请重试')
              console.log(response['msg'])

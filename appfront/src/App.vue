@@ -5,20 +5,23 @@
         <div>
           <p style="display: inline">welcome</p>
           <h3 style="display: inline; margin: 0 500px">LIANGZHICOMPANY</h3>
-          <!--<el-button style="display: inline" type="primary" @click="logBox">登录</el-button>-->
+          <!--登录按钮以及弹出框-->
           <el-popover
             placement="top"
             width="160"
             v-model="logInBox">
-              <el-input v-model="login_username" placeholder="请输入用户名"></el-input>
-              <el-input v-model="login_password" placeholder="请输入密码"></el-input>
-              <div style="text-align: right; margin: 0">
+              <el-input v-model="login_username" placeholder="请输入用户名" :style="{display: logInFlag}"></el-input>
+              <el-input v-model="login_password" placeholder="请输入密码" :style="{display: logInFlag}"></el-input>
+              <el-button class="logInBoxBtn" type="primary" :style="{display: logSuccessFlag}">个人主页</el-button>
+              <el-button class="logInBoxBtn" type="primary" :style="{display: logSuccessFlag}" @click="logOut">退出登录</el-button>
+              <div style="text-align: right; margin: 0"  :style="{display: logInFlag}">
               <el-button size="mini" type="text" @click="dialogFormVisible = true">注册</el-button>
               <el-button type="primary" size="mini" @click="logIn">登录</el-button>
               </div>
               <el-button slot="reference">{{login_text}}</el-button>
           </el-popover>
         </div>
+        <!--注册弹窗-->
         <el-dialog title="注册" :visible.sync="dialogFormVisible">
           <el-form :model="logup_from">
             <el-form-item label="用户名" :label-width="formLabelWidth">
@@ -57,6 +60,7 @@
 <script>/* eslint-disable */
 import axios from 'axios'
 import {AJAXURL} from './define.js'
+import _ from 'lodash'
 import ElRow from "element-ui/packages/row/src/row";
 import qs from 'qs'
 export default {
@@ -74,11 +78,29 @@ export default {
         password: '',
         email: ''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      logInFlag: 'block',
+      logSuccessFlag: 'none'
     }
   },
+  created() {
+    this.getUserInfo();
+  },
   methods: {
-    logUp: function () {
+    getUserInfo(){
+      let that = this;
+      let article_user = sessionStorage.getItem("username");
+      if (article_user){
+        that.login_text = article_user;
+        that.logInFlag = 'none';
+        that.logSuccessFlag = 'block';
+      }else {
+        that.login_text = '登录';
+        that.logInFlag = 'block';
+        that.logSuccessFlag = 'none';
+      }
+    },
+    logUp () {
       let that = this;
       let data = {
         username: that.logup_from.username,
@@ -100,7 +122,7 @@ export default {
         }
       })
     },
-    logIn: function () {
+    logIn () {
       let that = this;
       let data = {
         username: that.login_username,
@@ -112,11 +134,29 @@ export default {
       }).then(function (res) {
         let response = res.data;
         if (response.error_num == 0) {
-          console.log(res);
           that.$message.success('欢迎');
+          that.login_username = '';
+          that.login_password = '';
           that.logInBox = false;
           that.login_text = response.userinfo;
           sessionStorage.setItem("username", response.userinfo);
+          that.logInFlag = 'none';
+          that.logSuccessFlag = 'block';
+        } else {
+          that.$message.error(response.msg);
+        }
+      })
+    },
+    logOut () {
+      let that = this;
+      axios.get(AJAXURL + 'log_out',{}).then(function (res) {
+        let response = res.data;
+        if (response.error_num == 0) {
+          that.$message.info('登出');
+          sessionStorage.removeItem('username');
+          that.login_text = '登录';
+          that.logInFlag = 'block';
+          that.logSuccessFlag = 'none';
         } else {
           that.$message.error(response.msg);
         }
@@ -138,5 +178,11 @@ export default {
 
   .router_btn {
     margin: 10px;
+  }
+  .el-button+.el-button {
+    margin-left: 0;
+  }
+  .logInBoxBtn {
+    margin: 10px auto!important;
   }
 </style>
