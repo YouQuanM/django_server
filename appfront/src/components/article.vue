@@ -1,0 +1,132 @@
+<template>
+  <div class="home">
+    <el-container>
+      <el-main style="border-right: 1px solid #999">
+        <el-row>
+          <div class="article_continer" :key="item.pk" v-for="item in article_list">
+            <el-row>
+              <el-col :span="12">
+                <div class="article_title">
+                  <h3 class="title_text">title:</h3>
+                  <div style="display: inline">{{ item.fields.article_title }}</div>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="article_user">
+                  <h3 class="user_text">user:</h3>
+                  <div style="display: inline">{{ item.fields.article_user }}</div>
+                </div>
+              </el-col>
+            </el-row>
+            <div class="article_body">
+              {{ item.fields.article_body }}
+            </div>
+            <div class="article_operate">
+              <div>
+                <el-button type="danger" icon="el-icon-delete" @click="deleteArticle(item.pk)" circle></el-button>
+              </div>
+            </div>
+          </div>
+        </el-row>
+      </el-main>
+      <el-aside width="300px" style="padding-left: 10px">
+        <el-row class="add_continer">
+          <p>写文章:</p>
+          <el-input class="article_title_input" type="textarea" :rows="1" v-model="input_title" placeholder="文章标题"></el-input>
+          <el-input class="article_body_input" type="textarea" :rows="4" v-model="input_body" placeholder="文章主体"></el-input>
+          <el-button type="primary" @click="addArticle()" style="float:left; margin: 2px;">发布</el-button>
+        </el-row>
+      </el-aside>
+    </el-container>
+  </div>
+</template>
+
+<script>/* eslint-disable */
+  import axios from 'axios'
+  import { AJAXURL } from '../define.js'
+import ElRow from "element-ui/packages/row/src/row";
+export default {
+  components: {ElRow},
+  name: 'article_add',
+  data () {
+    return {
+      input_title: '',
+      input_body: '',
+      article_list: []
+    }
+  },
+  mounted: function () {
+    this.showAllArticals()
+  },
+  methods: {
+    showAllArticals: function () {
+      let that = this;
+      axios.get(AJAXURL + 'show_articles').then(function (res) {
+        let response = res.data;
+        if (response.error_num == 0){
+          that.article_list = response.list
+        }else {
+          that.$message.error('查找失败')
+          console.log(response['msg'])
+        }
+      })
+    },
+    addArticle: function () {
+      let that = this;
+      let article_user = sessionStorage.getItem("username");
+      if (that.input_title != ''){
+         axios.get(AJAXURL + 'add_article',{
+           params: {
+             article_title: that.input_title,
+             article_body: that.input_body,
+             article_user: article_user
+           }
+         }).then(function (res) {
+           let response = res.data;
+           if (response.error_num == 0){
+             that.$message.success('发布成功');
+             that.showAllArticals();
+           }else {
+             that.$message.error('发布失败，请重试')
+             console.log(response['msg'])
+           }
+         })
+      }
+    },
+    deleteArticle: function (id) {
+      let that = this;
+      axios.get(AJAXURL + 'delete_article?id=' + id).then(function (res) {
+          let response = res.data;
+          if (response.error_num == 0) {
+            that.$message.success('删除成功');
+            that.showAllArticals();
+          } else {
+            that.$message.error('删除失败，请重试')
+            console.log(response['msg'])
+          }
+        })
+      }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  .article_continer {
+    border: 1px solid #666;
+    margin: 10px auto;
+  }
+  .article_title {
+    font-size: 20px;
+  }
+  .add_continer {
+    margin-top: 20px;
+  }
+  .title_text,.user_text {
+    display: inline;
+  }
+  .article_body {
+    border-top: 1px solid #777;
+    border-bottom: 1px solid #777;
+  }
+</style>
