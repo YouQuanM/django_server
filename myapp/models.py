@@ -20,3 +20,12 @@ class Article(models.Model):
 
     def __unicode__(self):
         return self.article_title,self.article_body,self.article_praise,self.article_user
+
+class Article_comment(models.Model):
+    article_id = models.IntegerField()
+    comment_body = models.TextField(max_length=256)
+    comment_username = models.CharField(max_length=64)
+    add_time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.article_id,self.comment_body,self.comment_username,self.add_time

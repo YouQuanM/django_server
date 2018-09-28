@@ -39,6 +39,22 @@
                 </el-col>
               </el-row>
             </div>
+            <div class="commentBox">
+              <div class="commentAdd">
+                <el-row class="add_continer">
+                  <el-input class="article_body_input" v-model="input_comment" placeholder="写评论" style="width: 90%"></el-input>
+                  <el-button type="primary" @click="addArticle_comment(item.pk)" style="float:right; margin: 2px;">评论</el-button>
+                </el-row>
+              </div>
+              <div class="commentBody">
+                <el-button type="primary" @click="showArticle_comment(item.pk)" style="margin: 2px;">评论</el-button>
+                  <div class="comment_text" v-for="value in comment_list">
+                      <div class="comment_user">{{ value.fields.comment_username }}</div>
+                      <div class="comment_time">{{ value.fields.add_time }}</div>
+                      <div class="comment_body">{{ value.fields.comment_body}}</div>
+                  </div>
+              </div>
+            </div>
           </div>
         </el-row>
       </el-main>
@@ -59,6 +75,7 @@
   import { AJAXURL } from '../define.js'
   import ElRow from "element-ui/packages/row/src/row";
   let _ = require('lodash');
+  import qs from 'qs'
 export default {
   components: {ElRow},
   name: 'article_add',
@@ -66,7 +83,9 @@ export default {
     return {
       input_title: '',
       input_body: '',
-      article_list: []
+      input_comment: '',
+      article_list: [],
+      comment_list: []
     }
   },
   mounted: function () {
@@ -124,7 +143,52 @@ export default {
             console.log(response['msg'])
           }
         })
+      },
+    addArticle_comment(article_id) {
+      let that = this;
+      let username = sessionStorage.getItem("username");
+      let data = {};
+      if (username){
+        data = {
+          article_id: article_id,
+          comment_body: that.input_comment,
+          comment_username: sessionStorage.getItem("username")
+        };
+      }else {
+        data = {
+          article_id: article_id,
+          comment_body: that.input_comment
+        }
       }
+      axios.post(AJAXURL + 'add_comment',
+        qs.stringify(data),
+        {
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function (res) {
+        let response = res.data;
+        if (response.error_num == 0) {
+
+        } else {
+          that.$message.error('评论失败,' + response.msg);
+          console.log(response['msg'])
+        }
+      })
+    },
+    showArticle_comment(article_id){
+      let that = this;
+      axios.get(AJAXURL + 'show_comment?article_id=' + article_id).then(function (res) {
+        let response = res.data;
+        if (response.error_num == 0){
+          _.forEach(response.list, function (item) {
+            item.fields.add_time = item.fields.add_time.slice(0,10);
+          })
+          that.comment_list = response.list;
+        }else {
+          that.$message.error('查找失败')
+          console.log(response['msg'])
+        }
+      })
+    }
   }
 }
 </script>
@@ -147,5 +211,26 @@ export default {
   .article_body {
     border-top: 1px solid #777;
     border-bottom: 1px solid #777;
+  }
+  .commentBox {
+    border-top: 1px solid #777;
+  }
+  .comment_text {
+    border: 1px solid #888;
+  }
+  .comment_user {
+    width: 50%;
+    float: left;
+    display: inline-block;
+    border-bottom: 1px solid #00ffff;
+  }
+  .comment_time {
+    width: 50%;
+    float: right;
+    display: inline-block;
+    border-bottom: 1px solid #00ffff;
+  }
+  .comment_body {
+
   }
 </style>

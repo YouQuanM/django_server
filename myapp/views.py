@@ -15,8 +15,7 @@ from django.contrib import auth
 
 # Create your views here.
 from myapp import models
-from myapp.models import Book
-from myapp.models import Article
+from myapp.models import Book, Article_comment ,Article
 
 # 装饰器start
 @csrf_protect
@@ -156,6 +155,32 @@ def delete_article(request):
     try:
         id = Article.objects.get(id=request.GET.get('id'))
         id.delete()
+        response['msg'] = 'success'
+        response['error_num'] = 0
+    except  Exception,e:
+        response['msg'] = str(e)
+        response['error_num'] = 1
+
+    return JsonResponse(response)
+
+@csrf_exempt
+def add_comment(request):
+    response = {}
+    article_id = request.POST.get('article_id')
+    comment_body = request.POST.get('comment_body')
+    comment_username = request.POST.get('comment_username','匿名用户')
+    article_comment = Article_comment(article_id=article_id,comment_body=comment_body,comment_username=comment_username)
+    article_comment.save()
+    response['msg'] = 'success'
+    response['error_num'] = 0
+
+    return JsonResponse(response)
+
+def show_comment(request):
+    response = {}
+    try:
+        articles = Article_comment.objects.filter(article_id=request.GET.get('article_id'))
+        response['list'] = json.loads(serializers.serialize("json", articles))
         response['msg'] = 'success'
         response['error_num'] = 0
     except  Exception,e:

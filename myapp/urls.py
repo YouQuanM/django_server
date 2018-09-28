@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'log_up$', views.log_up, ),
     url(r'log_in$', views.log_in, ),
     url(r'log_out$', views.log_out, ),
+    url(r'add_comment$', views.add_comment, ),
+    url(r'show_comment$', views.show_comment, ),
 ]
 
