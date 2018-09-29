@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'log_out$', views.log_out, ),
     url(r'add_comment$', views.add_comment, ),
     url(r'show_comment$', views.show_comment, ),
+    url(r'add_praise$', views.add_praise, ),
 ]
 

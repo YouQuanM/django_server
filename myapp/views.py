@@ -163,6 +163,23 @@ def delete_article(request):
 
     return JsonResponse(response)
 
+# 点赞接口
+def add_praise(request):
+    response = {}
+    try:
+        article_id = request.GET.get('article_id')
+        article = Article.objects.get(pk=article_id)
+        article.article_praise = article.article_praise+1
+        article.save()
+        response['msg'] = 'success'
+        response['error_num'] = 0
+    except  Exception,e:
+        response['msg'] = str(e)
+        response['error_num'] = 1
+
+    return JsonResponse(response)
+
+
 @csrf_exempt
 def add_comment(request):
     response = {}

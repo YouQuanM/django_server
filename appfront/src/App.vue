@@ -41,13 +41,16 @@
         </el-dialog>
       </el-header>
       <el-container>
-        <el-aside style="border-right: 1px solid #999" width="130px">
+        <el-aside style="border-right: 1px solid #999" width="200px">
           <router-link to="/library">
             <el-button class="router_btn" type="primary">library</el-button>
           </router-link>
           <router-link to="/article">
             <el-button class="router_btn" type="primary">article</el-button>
           </router-link>
+          <div>
+            <img src="./assets/ququ.jpg" height="200" width="200"/>
+          </div>
         </el-aside>
         <el-main>
           <router-view/>

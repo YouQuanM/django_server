@@ -24,7 +24,8 @@
             <div class="article_operate">
               <el-row>
                 <el-col :span="6">
-                    <el-button type="primary" icon="el-icon-caret-top" circle></el-button>
+                    <el-button type="primary" icon="el-icon-caret-top" circle @click="articlePraise(item.pk)"></el-button>
+                    {{ item.fields.article_praise }}
                 </el-col>
                 <el-col :span="6">
                     <el-button type="primary" icon="el-icon-edit" circle></el-button>
@@ -48,7 +49,7 @@
               </div>
               <div class="commentBody">
                 <el-button type="primary" @click="showArticle_comment(item.pk)" style="margin: 2px;">评论</el-button>
-                  <div class="comment_text" v-for="value in comment_list">
+                  <div class="comment_text" :key="value.pk" v-for="value in comment_list">
                       <div class="comment_user">{{ value.fields.comment_username }}</div>
                       <div class="comment_time">{{ value.fields.add_time }}</div>
                       <div class="comment_body">{{ value.fields.comment_body}}</div>
@@ -181,10 +182,22 @@ export default {
         if (response.error_num == 0){
           _.forEach(response.list, function (item) {
             item.fields.add_time = item.fields.add_time.slice(0,10);
-          })
+          });
           that.comment_list = response.list;
         }else {
-          that.$message.error('查找失败')
+          that.$message.error('查找失败');
+          console.log(response['msg'])
+        }
+      })
+    },
+    articlePraise(article_id){
+      let that = this;
+      axios.get(AJAXURL + 'add_praise?article_id=' + article_id).then(function (res) {
+        let response = res.data;
+        if (response.error_num == 0){
+          that.showAllArticals();
+        }else {
+          that.$message.error('点赞失败');
           console.log(response['msg'])
         }
       })
