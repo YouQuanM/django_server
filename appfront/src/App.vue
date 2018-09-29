@@ -16,7 +16,7 @@
               <el-button class="logInBoxBtn" type="primary" :style="{display: logSuccessFlag}" @click="logOut">退出登录</el-button>
               <div style="text-align: right; margin: 0"  :style="{display: logInFlag}">
               <el-button size="mini" type="text" @click="dialogFormVisible = true">注册</el-button>
-              <el-button type="primary" size="mini" @click="logIn">登录</el-button>
+              <el-button type="primary" size="mini" @click="logIn('Login')">登录</el-button>
               </div>
               <el-button slot="reference">{{login_text}}</el-button>
           </el-popover>
@@ -53,7 +53,7 @@
           </div>
         </el-aside>
         <el-main>
-          <router-view/>
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -83,7 +83,13 @@ export default {
       },
       formLabelWidth: '120px',
       logInFlag: 'block',
-      logSuccessFlag: 'none'
+      logSuccessFlag: 'none',
+      form_login: {
+        username: '',
+        password: ''
+      },
+      routerFlag: 'block',
+      loginAreaFlag: 'none'
     }
   },
   created() {
@@ -128,9 +134,9 @@ export default {
     logIn () {
       let that = this;
       let data = {
-        username: that.login_username,
-        password: that.login_password,
-      };
+          username: that.login_username,
+          password: that.login_password,
+        };
       axios.post(AJAXURL + 'log_in',
         qs.stringify(data),
         {headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -162,6 +168,10 @@ export default {
           that.login_text = '登录';
           that.logInFlag = 'block';
           that.logSuccessFlag = 'none';
+          let path = that.$route.path;
+          if (path == '/userpage'){
+            that.$router.push('/#');
+          }
         } else {
           that.$message.error(response.msg);
         }

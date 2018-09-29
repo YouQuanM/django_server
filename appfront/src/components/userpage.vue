@@ -2,7 +2,8 @@
   <div class="userpage">
     <el-row :gutter="20">
       <el-col :span="16" style="border-right: 1px solid #777">
-        <div class="user_articles">
+        <div class="grid-content bg-purple">
+          <div class="user_articles">
           <el-row>
             <div class="article_continer" :key="item.pk" v-for="item in article_list">
               <el-row>
@@ -44,8 +45,9 @@
             </div>
           </el-row>
         </div>
+        </div>
       </el-col>
-     <el-col :span="8">
+      <el-col :span="8">
         <div class="user_center">
           <div class="username">用户名：{{ username }}</div>
           <div class="changepassword">
