@@ -12,7 +12,7 @@
             v-model="logInBox">
               <el-input v-model="login_username" placeholder="请输入用户名" :style="{display: logInFlag}"></el-input>
               <el-input v-model="login_password" placeholder="请输入密码" :style="{display: logInFlag}"></el-input>
-              <el-button class="logInBoxBtn" type="primary" :style="{display: logSuccessFlag}">个人主页</el-button>
+              <router-link to="/userpage"><el-button class="logInBoxBtn" type="primary" :style="{display: logSuccessFlag}">个人主页</el-button></router-link>
               <el-button class="logInBoxBtn" type="primary" :style="{display: logSuccessFlag}" @click="logOut">退出登录</el-button>
               <div style="text-align: right; margin: 0"  :style="{display: logInFlag}">
               <el-button size="mini" type="text" @click="dialogFormVisible = true">注册</el-button>
@@ -141,8 +141,9 @@ export default {
           that.login_username = '';
           that.login_password = '';
           that.logInBox = false;
-          that.login_text = response.userinfo;
-          sessionStorage.setItem("username", response.userinfo);
+          that.login_text = response.username;
+          sessionStorage.setItem("username", response.username);
+          sessionStorage.setItem("userid", response.userid);
           that.logInFlag = 'none';
           that.logSuccessFlag = 'block';
         } else {
@@ -157,6 +158,7 @@ export default {
         if (response.error_num == 0) {
           that.$message.info('登出');
           sessionStorage.removeItem('username');
+          sessionStorage.removeItem('userid');
           that.login_text = '登录';
           that.logInFlag = 'block';
           that.logSuccessFlag = 'none';

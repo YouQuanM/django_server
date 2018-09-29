@@ -111,12 +111,14 @@ export default {
     addArticle: function () {
       let that = this;
       let article_user = sessionStorage.getItem("username");
+      let article_userid = sessionStorage.getItem("userid");
       if (that.input_title != ''){
          axios.get(AJAXURL + 'add_article',{
            params: {
              article_title: that.input_title,
              article_body: that.input_body,
-             article_user: article_user
+             article_user: article_user,
+             article_userid: article_userid
            }
          }).then(function (res) {
            let response = res.data;
