@@ -21,6 +21,9 @@ class Article(models.Model):
     def __unicode__(self):
         return self.article_title,self.article_body,self.article_praise,self.article_user
 
+    class Meta:
+        ordering = ['-add_time']
+
 class Article_comment(models.Model):
     article_id = models.IntegerField()
     comment_body = models.TextField(max_length=256)

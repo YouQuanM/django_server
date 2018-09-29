@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'add_comment$', views.add_comment, ),
     url(r'show_comment$', views.show_comment, ),
     url(r'add_praise$', views.add_praise, ),
+    url(r'change_password$', views.change_password, ),
 ]
 

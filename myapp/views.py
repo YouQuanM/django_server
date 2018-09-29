@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import auth
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
 from myapp import models
@@ -55,12 +56,38 @@ def log_in(request):
         if user.is_active:
             response['msg'] = 'success'
             response['error_num'] = 0
-            response['userinfo'] = user.username
+            response['username'] = user.username
+            response['userid'] = user.pk
         else:
             response['msg'] = 'notactive'
             response['error_num'] = 1
     else:
         response['msg'] = '用户名或密码错误'
+        response['error_num'] = 1
+
+    return JsonResponse(response)
+
+# 修改密码接口
+@csrf_exempt
+def change_password(request):
+    response = {}
+    userid = request.POST.get('userid')
+    user = User.objects.get(pk=userid)
+    old_password = request.POST.get('old_password')
+    new_password = request.POST.get('new_password')
+    userpassword = user.password
+    check = check_password(old_password,userpassword)
+    if check:
+        try:
+            user.password = make_password(new_password)
+            user.save()
+            response['msg'] = 'success'
+            response['error_num'] = 0
+        except Exception,e:
+            response['msg'] = str(e)
+            response['error_num'] = 1
+    else:
+        response['msg'] = '密码错误'
         response['error_num'] = 1
 
     return JsonResponse(response)
@@ -74,10 +101,7 @@ def log_out(request):
     return JsonResponse(response)
 
 
-
-
 # 图书接口（以后删除，仅作为测试使用）start
-
 def add_book(request):
     response = {}
     try:
@@ -139,7 +163,11 @@ def add_article(request):
 def show_articles(request):
     response = {}
     try:
-        articles = Article.objects.filter()
+        user = request.GET.get('username','all')
+        if user == 'all':
+            articles = Article.objects.filter()
+        else:
+            articles = Article.objects.filter(article_user=user)
         response['list'] = json.loads(serializers.serialize("json", articles))
         response['msg'] = 'success'
         response['error_num'] = 0
