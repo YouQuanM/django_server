@@ -3,7 +3,14 @@
     <el-row :gutter="20">
       <el-col :span="16" style="border-right: 1px solid #777">
         <div class="grid-content bg-purple">
-          <div class="user_articles">
+          <div class="user_noarticle" v-if="article_list.length == 0">
+            <el-alert
+              title="你还没有文章"
+              type="success"
+              :closable="false">
+            </el-alert>
+          </div>
+          <div class="user_articles" v-if="article_list.length != 0">
           <el-row>
             <div class="article_continer" :key="item.pk" v-for="item in article_list">
               <el-row>
@@ -99,7 +106,7 @@ export default {
           _.forEach(response.list,function (item) {
             item.fields.add_time = item.fields.add_time.slice(0,10)
           });
-          that.article_list = response.list
+          that.article_list = response.list;
         }else {
           that.$message.error('查找失败')
           console.log(response['msg'])

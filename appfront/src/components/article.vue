@@ -40,7 +40,8 @@
                 </el-col>
               </el-row>
             </div>
-            <div class="commentBox">
+            <el-button type="primary" @click="showArticle_comment(item.pk)" style="margin: 2px;">评论</el-button>
+            <div class="commentBox" v-if="showCommentFlag == item.pk">
               <div class="commentAdd">
                 <el-row class="add_continer">
                   <el-input class="article_body_input" v-model="input_comment" placeholder="写评论" style="width: 90%"></el-input>
@@ -48,12 +49,11 @@
                 </el-row>
               </div>
               <div class="commentBody">
-                <el-button type="primary" @click="showArticle_comment(item.pk)" style="margin: 2px;">评论</el-button>
-                  <div class="comment_text" :key="value.pk" v-for="value in comment_list">
-                      <div class="comment_user">{{ value.fields.comment_username }}</div>
-                      <div class="comment_time">{{ value.fields.add_time }}</div>
-                      <div class="comment_body">{{ value.fields.comment_body}}</div>
-                  </div>
+                <div class="comment_text" :key="value.pk" v-for="value in comment_list">
+                  <div class="comment_user">{{ value.fields.comment_username }}</div>
+                  <div class="comment_time">{{ value.fields.add_time }}</div>
+                  <div class="comment_body">{{ value.fields.comment_body}}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -86,7 +86,8 @@ export default {
       input_body: '',
       input_comment: '',
       article_list: [],
-      comment_list: []
+      comment_list: [],
+      showCommentFlag: ''
     }
   },
   mounted: function () {
@@ -99,7 +100,9 @@ export default {
         let response = res.data;
         if (response.error_num == 0){
           _.forEach(response.list,function (item) {
-            item.fields.add_time = item.fields.add_time.slice(0,10)
+            let date = item.fields.add_time.slice(0,10);
+            let time = item.fields.add_time.slice(11,19);
+            item.fields.add_time = date + " " + time;
           });
           that.article_list = response.list
         }else {
@@ -186,6 +189,8 @@ export default {
             item.fields.add_time = item.fields.add_time.slice(0,10);
           });
           that.comment_list = response.list;
+          that.input_comment = '';
+          that.showCommentFlag = article_id;
         }else {
           that.$message.error('查找失败');
           console.log(response['msg'])
