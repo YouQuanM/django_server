@@ -4,6 +4,7 @@
       <el-main style="border-right: 1px solid #999">
         <el-row>
           <div class="article_continer" :key="item.pk" v-for="item in article_list">
+            <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <el-row>
               <el-col :span="12">
                 <div class="article_title">
@@ -41,6 +42,7 @@
               </el-row>
             </div>
             <el-button type="primary" @click="showArticle_comment(item.pk)" style="margin: 2px;">评论</el-button>
+            <el-button type="primary" @click="showCommentFlag = ''" style="margin: 2px;" v-if="showCommentFlag == item.pk">收起</el-button>
             <div class="commentBox" v-if="showCommentFlag == item.pk">
               <div class="commentAdd">
                 <el-row class="add_continer">
@@ -56,12 +58,16 @@
                 </div>
               </div>
             </div>
+            </el-card>
           </div>
         </el-row>
       </el-main>
       <el-aside width="300px" style="padding-left: 10px">
         <el-row class="add_continer">
           <p>写文章:</p>
+          <!--<div>            &lt;!&ndash; 组件有两个属性 value 传入内容双向绑定 setting传入配置信息 &ndash;&gt;-->
+            <!--<editor class="editor" :value="content"  :setting="editorSetting" @input="(content)=> content = content"></editor>-->
+          <!--</div>-->
           <el-input class="article_title_input" type="textarea" :rows="1" v-model="input_title" placeholder="文章标题"></el-input>
           <el-input class="article_body_input" type="textarea" :rows="4" v-model="input_body" placeholder="文章主体"></el-input>
           <el-button type="primary" @click="addArticle()" style="float:left; margin: 2px;">发布</el-button>
@@ -76,9 +82,14 @@
   import { AJAXURL } from '../define.js'
   import ElRow from "element-ui/packages/row/src/row";
   let _ = require('lodash');
-  import qs from 'qs'
+  import qs from 'qs';
+//  import editor from '@/modules/editor'
+
 export default {
-  components: {ElRow},
+  components: {
+    ElRow,
+//    'editor':editor
+  },
   name: 'article_add',
   data () {
     return {
@@ -115,7 +126,10 @@ export default {
       let that = this;
       let article_user = sessionStorage.getItem("username");
       let article_userid = sessionStorage.getItem("userid");
-      if (that.input_title != ''){
+      if (!article_userid){
+        that.$message.error('请先登录')
+      }else {
+        if (that.input_title != ''){
          axios.get(AJAXURL + 'add_article',{
            params: {
              article_title: that.input_title,
@@ -136,6 +150,8 @@ export default {
            }
          })
       }
+      }
+
     },
     deleteArticle: function (id) {
       let that = this;
@@ -216,8 +232,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .article_continer {
-    border: 1px solid #666;
-    margin: 10px auto;
+    margin: 15px auto;
   }
   .article_title {
     font-size: 20px;
@@ -229,8 +244,9 @@ export default {
     display: inline;
   }
   .article_body {
-    border-top: 1px solid #777;
-    border-bottom: 1px solid #777;
+    padding: 15px;
+    border-top: 1px solid rgba(119, 119, 119, 0.35);
+    border-bottom: 1px solid rgba(119, 119, 119, 0.35);
   }
   .commentBox {
     border-top: 1px solid #777;
