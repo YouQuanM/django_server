@@ -1,81 +1,5 @@
 <template>
-  <!--<div class="home">-->
-    <!--<el-container>-->
-      <!--<el-main style="border-right: 1px solid #999">-->
-        <!--<el-row>-->
-          <!--<div class="article_continer" :key="item.pk" v-for="item in article_list">-->
-            <!--<el-card :body-style="{ padding: '0px' }" shadow="hover">-->
-            <!--<el-row>-->
-              <!--<el-col :span="12">-->
-                <!--<div class="article_title">-->
-                  <!--<h3 class="title_text">title:</h3>-->
-                  <!--<div style="display: inline">{{ item.fields.article_title }}</div>-->
-                <!--</div>-->
-              <!--</el-col>-->
-              <!--<el-col :span="12">-->
-                <!--<div class="article_user">-->
-                  <!--<h3 class="user_text">user:</h3>-->
-                  <!--<div style="display: inline">{{ item.fields.article_user }}</div>-->
-                <!--</div>-->
-              <!--</el-col>-->
-            <!--</el-row>-->
-            <!--<div class="article_body">-->
-              <!--{{ item.fields.article_body }}-->
-            <!--</div>-->
-            <!--<div class="article_operate">-->
-              <!--<el-row>-->
-                <!--<el-col :span="6">-->
-                    <!--<el-button type="primary" icon="el-icon-caret-top" circle @click="articlePraise(item.pk)"></el-button>-->
-                    <!--{{ item.fields.article_praise }}-->
-                <!--</el-col>-->
-                <!--<el-col :span="6">-->
-                    <!--<el-button type="primary" icon="el-icon-edit" circle></el-button>-->
-                <!--</el-col>-->
-                <!--<el-col :span="6">-->
-                  <!--<el-button type="danger" icon="el-icon-delete" @click="deleteArticle(item.pk)" circle></el-button>-->
-                <!--</el-col>-->
-                <!--<el-col :span="6">-->
-                  <!--<div class="grid-content bg-purple">-->
-                    <!--{{ item.fields.add_time }}-->
-                  <!--</div>-->
-                <!--</el-col>-->
-              <!--</el-row>-->
-            <!--</div>-->
-            <!--<el-button type="primary" @click="showArticle_comment(item.pk)" style="margin: 2px;">评论</el-button>-->
-            <!--<el-button type="primary" @click="showCommentFlag = ''" style="margin: 2px;" v-if="showCommentFlag == item.pk">收起</el-button>-->
-            <!--<div class="commentBox" v-if="showCommentFlag == item.pk">-->
-              <!--<div class="commentAdd">-->
-                <!--<el-row class="add_continer">-->
-                  <!--<el-input class="article_body_input" v-model="input_comment" placeholder="写评论" style="width: 90%"></el-input>-->
-                  <!--<el-button type="primary" @click="addArticle_comment(item.pk)" style="float:right; margin: 2px;">评论</el-button>-->
-                <!--</el-row>-->
-              <!--</div>-->
-              <!--<div class="commentBody">-->
-                <!--<div class="comment_text" :key="value.pk" v-for="value in comment_list">-->
-                  <!--<div class="comment_user">{{ value.fields.comment_username }}</div>-->
-                  <!--<div class="comment_time">{{ value.fields.add_time }}</div>-->
-                  <!--<div class="comment_body">{{ value.fields.comment_body}}</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--</el-card>-->
-          <!--</div>-->
-        <!--</el-row>-->
-      <!--</el-main>-->
-      <!--<el-aside width="300px" style="padding-left: 10px">-->
-        <!--<el-row class="add_continer">-->
-          <!--<p>写文章:</p>-->
-          <!--&lt;!&ndash;<div>            &lt;!&ndash; 组件有两个属性 value 传入内容双向绑定 setting传入配置信息 &ndash;&gt;&ndash;&gt;-->
-            <!--&lt;!&ndash;<editor class="editor" :value="content"  :setting="editorSetting" @input="(content)=> content = content"></editor>&ndash;&gt;-->
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-          <!--<el-input class="article_title_input" type="textarea" :rows="1" v-model="input_title" placeholder="文章标题"></el-input>-->
-          <!--<el-input class="article_body_input" type="textarea" :rows="4" v-model="input_body" placeholder="文章主体"></el-input>-->
-          <!--<el-button type="primary" @click="addArticle()" style="float:left; margin: 2px;">发布</el-button>-->
-        <!--</el-row>-->
-      <!--</el-aside>-->
-    <!--</el-container>-->
-  <!--</div>-->
-  <div class="article_continer">
+  <div class="article_continer" style="padding-bottom: 50px">
     <div class="article" :key="item.pk" v-for="item in article_list">
       <card>
         <h3 class="card-padding" slot="header" style="width:100%;display:block;">{{ item.fields.article_title }}</h3>
@@ -91,15 +15,32 @@
             <br/>
           </div>
           <div class="vux-1px-r">
-            <x-button mini>
+            <x-button mini @click.native="showArticle_comment(item.pk)">
               comment
             </x-button>
             <br/>
           </div>
-          <div>
+          <div class="vux-1px-r">
             {{ item.fields.article_user }}
             <br/>
           </div>
+          <div>
+            {{ item.fields.add_time }}
+            <br/>
+          </div>
+        </div>
+        <div class="comment" slot="content" v-if="showCommentFlag == item.pk">
+          <x-button @click.native="showCommentFlag = ''" style="margin: 2px;" v-if="showCommentFlag == item.pk">收起</x-button>
+          <br/>
+          <div class="commentBody">
+            <div class="comment_text" :key="value.pk" v-for="value in comment_list">
+              <div class="comment_user">{{ value.fields.comment_username }}</div>
+              <div class="comment_time">{{ value.fields.add_time }}</div>
+              <div class="comment_body">{{ value.fields.comment_body}}</div>
+            </div>
+          </div>
+          <x-input class="article_body_input" v-model="input_comment" placeholder="写评论" style="width: 90%"></x-input>
+          <x-button type="primary" @click.native="addArticle_comment(item.pk)">评论</x-button>
         </div>
       </card>
     </div>
@@ -111,10 +52,10 @@
   import { AJAXURL } from '../define.js'
   let _ = require('lodash');
   import qs from 'qs';
-  import { Card,XButton } from 'vux';
+  import { Card,XButton,XInput } from 'vux';
 export default {
   components: {
-    Card,XButton
+    Card,XButton,XInput
   },
   name: 'marticle',
   data () {
@@ -215,7 +156,7 @@ export default {
         }).then(function (res) {
         let response = res.data;
         if (response.error_num == 0) {
-
+          that.showArticle_comment(article_id)
         } else {
           that.$message.error('评论失败,' + response.msg);
           console.log(response['msg'])
@@ -233,6 +174,7 @@ export default {
           that.comment_list = response.list;
           that.input_comment = '';
           that.showCommentFlag = article_id;
+
         }else {
           that.$message.error('查找失败');
           console.log(response['msg'])
@@ -277,4 +219,16 @@ export default {
 .card-demo-flex span {
   color: #f74c31;
 }
+  .commentBody {
+    background: #ccc;
+  }
+  .comment_text {
+    border-bottom: 1px solid #f0f7ff;
+  }
+  .comment_user,.comment_time,.comment_body {
+    margin-left: 10px;
+  }
+  .comment_time {
+    float: right;
+  }
 </style>
