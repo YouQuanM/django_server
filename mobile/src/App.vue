@@ -4,13 +4,13 @@
     <router-view/>
     <tabbar style="position: fixed">
       <tabbar-item select>
-        <span slot="label" @click="goToSomewhere('index')">index</span>
+        <span slot="label" @click="goToSomewhere('/index')">index</span>
       </tabbar-item>
       <tabbar-item>
-        <span slot="label" @click="goToSomewhere('article')">article</span>
+        <span slot="label" @click="goToSomewhere('/marticle')">article</span>
       </tabbar-item>
       <tabbar-item>
-        <span slot="label">test</span>
+        <span slot="label" @click="goToSomewhere('/baobian')">test</span>
       </tabbar-item>
       <tabbar-item>
         <span slot="label">test</span>
@@ -26,6 +26,11 @@
           <x-button type="primary" size="large" @click.native="logIn">登录</x-button>
           <x-button @click.native="loginVisible = false" size="large">取消</x-button>
         </group>
+      </div>
+    </popup>
+    <popup v-model="personalCenter" position="right">
+      <div style="width:200px;">
+
       </div>
     </popup>
   </div>
@@ -76,7 +81,8 @@ export default {
       selected: 'index',
       loginVisible: false,
       logMineFlag: 'log',
-      showSuccess: false
+      showSuccess: false,
+      personalCenter: false
     }
   },
   created() {
@@ -170,16 +176,12 @@ export default {
         that.loginVisible = true;
       }else if (that.logMineFlag === 'mine') {
         //router到我的主页
+        that.personalCenter = true;
       }
     },
     goToSomewhere (navi) {
       let that = this;
-      if (navi == 'article'){
-        that.$router.push('/marticle')
-      }else if (navi == 'index') {
-        that.$router.push('/index')
-      }
-
+      that.$router.push(navi)
     }
   }
 }

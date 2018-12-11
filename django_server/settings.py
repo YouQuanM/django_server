@@ -62,7 +62,7 @@ ROOT_URLCONF = 'django_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['appfront/dist'],
+        'DIRS': ['mobile/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,7 +77,7 @@ TEMPLATES = [
 
 # Add for vuejs
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "appfront/dist/static"),
+    os.path.join(BASE_DIR, "mobile/dist/static"),
 ]
 
 WSGI_APPLICATION = 'django_server.wsgi.application'
