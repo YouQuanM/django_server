@@ -16,7 +16,7 @@
           </div>
           <div class="vux-1px-r">
             <x-button mini @click.native="showArticle_comment(item.pk)">
-              comment
+              评论
             </x-button>
             <br/>
           </div>
@@ -43,6 +43,9 @@
           <x-button type="primary" @click.native="addArticle_comment(item.pk)">评论</x-button>
         </div>
       </card>
+    </div>
+    <div class="toWriteArticel">
+      <div class="writeButton" @click="toWriteArticle()">写文章</div>
     </div>
   </div>
 </template>
@@ -192,6 +195,15 @@ export default {
           console.log(response['msg'])
         }
       })
+    },
+    toWriteArticle() {
+      let that = this;
+      let article_user = sessionStorage.getItem("username");
+      if (article_user){
+        that.$router.push({ path: '/writeArticle'});//跳转写文章页面
+      }else {
+        alert('请先登录')
+      }
     }
   }
 }
@@ -230,5 +242,20 @@ export default {
   }
   .comment_time {
     float: right;
+  }
+  .toWriteArticel {
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 100px;
+    right: 10px;
+  }
+  .writeButton {
+    width: 40px;
+    height: 30px;
+    padding-top: 10px;
+    background: #8cf3ff;
+    border-radius: 20px;
+    font-size: 13px;
   }
 </style>

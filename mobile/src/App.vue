@@ -10,7 +10,7 @@
         <span slot="label" @click="goToSomewhere('/marticle')">article</span>
       </tabbar-item>
       <tabbar-item>
-        <span slot="label" @click="goToSomewhere('/baobian')">test</span>
+        <span slot="label">test</span>
       </tabbar-item>
       <tabbar-item>
         <span slot="label">test</span>
