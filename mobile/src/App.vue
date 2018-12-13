@@ -1,38 +1,13 @@
 <template>
   <div id="app">
-    <x-header :left-options="{showBack: false}">liangzhi<button @click="login_minepage" slot="right">{{ login_text }}</button></x-header>
-    <router-view/>
-    <tabbar style="position: fixed">
-      <tabbar-item select>
-        <span slot="label" @click="goToSomewhere('/index')">index</span>
-      </tabbar-item>
-      <tabbar-item>
-        <span slot="label" @click="goToSomewhere('/marticle')">article</span>
-      </tabbar-item>
-      <tabbar-item>
-        <span slot="label">test</span>
-      </tabbar-item>
-      <tabbar-item>
-        <span slot="label">test</span>
-      </tabbar-item>
-    </tabbar>
-    <toast v-model="showSuccess" type="text" text="success"></toast>
-    <popup v-model="loginVisible" height="100%">
-      <div class="before_login">
-        <popup-header title="登录"></popup-header>
-        <group label-width="4.5em" label-margin-right="2em" label-align="right">
-          <x-input label="用户名" placeholder="请输入用户名" v-model="login_username"></x-input>
-          <x-input label="密码" placeholder="请输入密码" type="password" v-model="login_password"></x-input>
-          <x-button type="primary" size="large" @click.native="logIn">登录</x-button>
-          <x-button @click.native="loginVisible = false" size="large">取消</x-button>
-        </group>
-      </div>
-    </popup>
-    <popup v-model="personalCenter" position="right">
-      <div style="width:200px;">
-
-      </div>
-    </popup>
+    <div class="app-content">
+      <router-view/>
+    </div>
+    <div class="app-footer">
+      <div class="app-footer-item" @click="goToSomewhere('/index')">index</div>
+      <div class="app-footer-item" @click="goToSomewhere('/marticle')">article</div>
+      <div class="app-footer-item" @click="goToSomewhere('/mine')">mineSpace</div>
+    </div>
   </div>
 </template>
 
@@ -41,23 +16,7 @@
   import { AJAXURL } from './define.js'
   let _ = require('lodash');
   import qs from 'qs';
-  import { XButton,Drawer,XHeader,Popup,Group,PopupHeader,Tabbar,TabbarItem,Toast } from 'vux'
-  import XImg from "../node_modules/vux/src/components/x-img/index.vue";
-  import XInput from "../node_modules/vux/src/components/x-input/index.vue";
 export default {
-  components: {
-    XInput,
-    XImg,
-    XButton,
-    Drawer,
-    XHeader,
-    Popup,
-    Group,
-    PopupHeader,
-    Tabbar,
-    TabbarItem,
-    Toast
-  },
   name: 'App',
   data () {
     return {
@@ -102,6 +61,11 @@ export default {
         that.logInFlag = 'block';
         that.logSuccessFlag = 'none';
       }
+    },
+    toLogUp () {
+      let that = this;
+      that.loginVisible = false;
+      that.$router.push({ path: '/logUp'});//跳转注册页面
     },
     logUp () {
       let that = this;
@@ -188,8 +152,18 @@ export default {
 </script>
 
 <style>
-body{
-  margin: 0;
-  padding: 0;
-}
+  html { font-size: 20px; }
+
+  html,body{ margin: 0;  padding: 0; height: 100%; }
+
+  * { max-height: 99999px;}
+
+  #app { display: flex; flex-direction: column; align-items: stretch; height: 100%;}
+
+  .app-content { flex: 1 0 auto; width: 100%;}
+
+  .app-footer { position: fixed; bottom: 0; flex: 0 0 auto; display: flex; flex-direction: row; width: 100%; height: 100px; background: #FFF; border-top: 1px solid #999999; }
+
+  .app-footer-item { width: 250px; line-height: 100px; text-align: center;}
+
 </style>

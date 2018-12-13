@@ -1,6 +1,37 @@
 <template>
   <div class="index">
-    welcome to liangzhi
+    <div class="index-title">
+      WELCOME TO LIANGZHI
+    </div>
+    <div class="index-introduce">
+      <div class="introduce-title">
+        <p>Meet us!</p>
+      </div>
+      <div class="introduce-item">
+        <div class="introduce-item-name">
+          LZC_yh
+        </div>
+        <div class="introduce-item-content">
+          founder of LZC_web, owner of liangzhicompany.com, system maintainer of LZC_web, king of LZC_web_admin
+        </div>
+      </div>
+      <div class="introduce-item">
+        <div class="introduce-item-name">
+          LZC_aoi
+        </div>
+        <div class="introduce-item-content">
+          设计
+        </div>
+      </div>
+      <div class="introduce-item">
+        <div class="introduce-item-name">
+          LZC_allen
+        </div>
+        <div class="introduce-item-content">
+          好像没什么用
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -9,7 +40,7 @@ export default {
   name: 'index',
   data () {
     return {
-      msg: ''
+
     }
   }
 }
@@ -17,18 +48,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  .index-title { font-family: PingFangSC-Medium;  font-size: 40px;  color: #2D2D2D;  text-align: center; }
+
+  .index-introduce { margin: 40px 32px; }
+
+  .introduce-title p { font-family: PingFangSC-Medium;  font-size: 34px; text-align: center; }
+
+  .introduce-item { margin: 40px 0; border-bottom: 1px solid #E4E8E8; }
+
+  .introduce-item .introduce-item-name { margin: 5px 0; font-family: PingFangSC-Regular;  font-size: 30px;  color: #333333;  letter-spacing: 0; }
+
+  .introduce-item .introduce-item-content { font-family: PingFangSC-Regular;  font-size: 28px;  color: #666666;  letter-spacing: 0; }
 </style>
