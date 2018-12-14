@@ -58,6 +58,7 @@ def log_in(request):
             response['error_num'] = 0
             response['username'] = user.username
             response['userid'] = user.pk
+            response['email'] = user.email
         else:
             response['msg'] = 'notactive'
             response['error_num'] = 1
