@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import index from '@/components/index'
 import marticle from '@/components/marticle'
 import writeArticle from '@/components/writeArticle'
-import logUp from '@/components/logUp'
+import mine from '@/components/mine'
 
 Vue.use(Router)
 
@@ -25,9 +25,9 @@ export default new Router({
       component: writeArticle
     },
     {
-      path: '/logUp',
-      name: 'logUp',
-      component: logUp
+      path: '/mine',
+      name: 'mine',
+      component: mine
     }
   ]
 })
