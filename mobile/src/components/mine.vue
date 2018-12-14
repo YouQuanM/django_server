@@ -48,6 +48,7 @@
         </div>
         <div class="log-btn" @click="logUp()">注 册</div>
         <div class="cancel-btn" @click="cancel()">取 消</div>
+        <div class="log-btn" @click="showLogIn()">返 回 登 录</div>
       </div>
     </div>
   </div>
@@ -102,6 +103,7 @@ export default {
       that.log_flag = true;
       that.log_form_flag = true;
       that.register_form_flag = false;
+      that.log_img_text = '登TM的';
     },
     showLogUp () {
       let that = this;
@@ -221,6 +223,8 @@ export default {
 </script>
 
 <style scoped>
+  .mine { width: 100%; margin-bottom: 200px; }
+
   .mine-header { width: 100%; height: 220px;}
 
   .header-default { line-height: 220px; font-family: PingFangSC-Regular; font-size: 40px;  color: #FFF; background: #2c3e50;  letter-spacing: 0;  text-align: center; }
