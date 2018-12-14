@@ -47,11 +47,11 @@ export default {
        }).then(function (res) {
          let response = res.data;
          if (response.error_num == 0){
-           that.$router.push({ path: '/marticle'});//跳转写文章页面
+           that.$router.go(-1);//跳转写文章页面
            that.input_title = '';
            that.input_body = '';
          }else {
-           that.$message.error('发布失败，请重试')
+           that.$toast.center('发布失败，请重试')
            console.log(response['msg'])
          }
        })
