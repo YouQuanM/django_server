@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Toast from './components/toast/index.js'
-import './components/Toast/toast.css';
+import './components/toast/toast.css';
 Vue.config.productionTip = false
 
 Vue.use(Toast);
