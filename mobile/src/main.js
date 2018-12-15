@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from './router'
 import Toast from './components/toast/index.js'
 import './components/toast/toast.css';
+import store from './store'//引入store
+
 Vue.config.productionTip = false
 
 Vue.use(Toast);
@@ -13,6 +15,7 @@ Vue.use(Toast);
 new Vue({
   el: '#app',
   router,
+  store,//使用store
   components: {
     App,
   },

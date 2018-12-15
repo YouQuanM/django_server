@@ -48,7 +48,7 @@
         </div>
         <div class="log-btn" @click="logUp()">注 册</div>
         <div class="cancel-btn" @click="cancel()">取 消</div>
-        <div class="log-btn" @click="showLogIn()">返 回 登 录</div>
+        <div class="register-btn" @click="showLogIn()">返 回 登 录</div>
       </div>
     </div>
   </div>
@@ -236,6 +236,7 @@ export default {
   .header-email {font-size:56px;  color:#000; }
 
 
+
   /*登录*/
   .log-img { width: 100%; height: 300px; line-height: 300px; font-size: 80px; text-align: center; background: #f0f7ff; border-bottom: 1px solid #666666; }
 
@@ -249,14 +250,14 @@ export default {
 
   .log-form-item input, .register-form-item input { width: 500px; height: 60px; margin: 10px 0 0 50px; border: none; font-family: PingFangSC-Regular;  font-size: 32px;  color: #999999;  letter-spacing: 0; }
 
-  .log-btn, .cancel-btn, .register-btn, .logout-btn { width: 606px; height: 88px; line-height: 88px; margin: 10px auto; text-align: center;  border-radius: 15px; font-family: PingFangSC-Regular;  font-size: 32px;  color: #FFFFFF;  letter-spacing: 0; }
+  .log-btn, .cancel-btn, .register-btn, .logout-btn { width: 606px; height: 88px; line-height: 88px; margin: 10px auto; text-align: center;  border-radius: 15px; font-family: PingFangSC-Regular;  font-size: 32px;  letter-spacing: 0; }
 
-  .log-btn { background: #4779c6; }
+  .log-btn { color: #FFF; background: #2db7f5; }
 
-  .cancel-btn {  background: #ff4a21; }
+  .cancel-btn { color: #FFF; background: #ff4a21; }
 
-  .register-btn { color: #666666; border: 1px solid #3a8ee6 }
+  .register-btn { color: #2b85e4; border: 1px solid #2b85e4; }
 
-  .logout-btn { color: #666666; border: 1px solid #ff4a21; }
+  .logout-btn { color: #ed4014; border: 1px solid #ed4014; }
 
 </style>

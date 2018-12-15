@@ -150,7 +150,7 @@ def show_books(request):
 def add_article(request):
     response = {}
     try:
-        article = Article(article_title=request.GET.get('article_title'),article_body=request.GET.get('article_body'),article_praise=0,article_user=request.GET.get('article_user'))
+        article = Article(article_title=request.GET.get('article_title'),article_body=request.GET.get('article_body'),article_praise=0,article_user=request.GET.get('article_user'),article_userid=request.GET.get('article_userid'))
         article.save()
         response['msg'] = 'success'
         response['error_num'] = 0
@@ -165,8 +165,11 @@ def show_articles(request):
     response = {}
     try:
         user = request.GET.get('username','all')
-        if user == 'all':
+        articleId = request.GET.get('article_id','all')
+        if user == 'all' and articleId == 'all':
             articles = Article.objects.filter()
+        elif user == 'all' and articleId != 'all':
+            articles = Article.objects.filter(id=articleId)
         else:
             articles = Article.objects.filter(article_user=user)
         response['list'] = json.loads(serializers.serialize("json", articles))

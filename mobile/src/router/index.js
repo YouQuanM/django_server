@@ -4,6 +4,7 @@ import index from '@/components/index'
 import marticle from '@/components/marticle'
 import writeArticle from '@/components/writeArticle'
 import mine from '@/components/mine'
+import articleDetail from '@/components/articleDetail'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/mine',
       name: 'mine',
       component: mine
+    },
+    {
+      path: '/articleDetail',
+      name: 'articleDetail',
+      component: articleDetail
     }
   ]
 })

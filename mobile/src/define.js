@@ -1,1 +1,1 @@
-export const AJAXURL = 'http://127.0.0.1:8000/api/'
+export const AJAXURL = 'http://172.16.50.34:8000/api/'

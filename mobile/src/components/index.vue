@@ -8,7 +8,7 @@
         <p>Meet us!</p>
       </div>
       <div class="introduce-item">
-        <div class="introduce-item-name">
+        <div class="introduce-item-name yh">
           LZC_yh
         </div>
         <div class="introduce-item-content">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="introduce-item">
-        <div class="introduce-item-name">
+        <div class="introduce-item-name aoi">
           LZC_aoi
         </div>
         <div class="introduce-item-content">
@@ -24,13 +24,16 @@
         </div>
       </div>
       <div class="introduce-item">
-        <div class="introduce-item-name">
+        <div class="introduce-item-name allen">
           LZC_allen
         </div>
         <div class="introduce-item-content">
           好像没什么用
         </div>
       </div>
+    </div>
+    <div class="index-img">
+      <img src="../assets/indeximg.jpeg" width="750" />
     </div>
   </div>
 </template>
@@ -56,7 +59,13 @@ export default {
 
   .introduce-item { margin: 40px 0; border-bottom: 1px solid #E4E8E8; }
 
-  .introduce-item .introduce-item-name { margin: 5px 0; font-family: PingFangSC-Regular;  font-size: 30px;  color: #333333;  letter-spacing: 0; }
+  .introduce-item .introduce-item-name { margin: 5px 0; font-family: PingFangSC-Regular;  font-size: 30px;  letter-spacing: 0; }
 
   .introduce-item .introduce-item-content { font-family: PingFangSC-Regular;  font-size: 28px;  color: #666666;  letter-spacing: 0; }
+
+  .yh { color: #2b85e4; }
+
+  .aoi { color: yellow; }
+
+  .allen { color: red; }
 </style>
