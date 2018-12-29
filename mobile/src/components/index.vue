@@ -20,7 +20,7 @@
           LZC_aoi
         </div>
         <div class="introduce-item-content">
-          设计
+          设计, king of zhuangbi
         </div>
       </div>
       <div class="introduce-item">
@@ -28,7 +28,7 @@
           LZC_allen
         </div>
         <div class="introduce-item-content">
-          好像没什么用
+          改成  将来最伟大的汽车工程师
         </div>
       </div>
     </div>
