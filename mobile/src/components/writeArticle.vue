@@ -54,7 +54,7 @@ export default {
        }).then(function (res) {
          let response = res.data;
          if (response.error_num == 0){
-           that.$router.go(-1);//跳转写文章页面
+           that.$router.replace('/marticle');//跳转写文章页面
            that.input_title = '';
            that.input_body = '';
          }else {
