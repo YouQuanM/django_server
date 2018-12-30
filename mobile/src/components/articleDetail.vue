@@ -126,7 +126,7 @@ export default {
           let response = res.data;
           if (response.error_num == 0) {
             that.$toast.center('删除成功');
-            that.showAllArticals();
+            that.$router.replace('/marticle');//跳转写文章页面
           } else {
             that.$toast.center('删除失败，请重试')
             console.log(response['msg'])
