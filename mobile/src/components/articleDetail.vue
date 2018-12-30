@@ -32,7 +32,21 @@
     <div class="article-footer">
       <div class="article-praise" v-if="!isUser" @click="articlePraise()">点赞 {{ article_praise }}</div>
       <div class="article-delete" v-if="isUser" @click="deleteArticle()">删除</div>
-      <div class="article-comment" @click="comment()">评论</div>
+      <div class="article-comment" @click="showAdd_comment()">评论</div>
+    </div>
+    <div class="article-comment-write" v-if="comment_flag">
+      <div class="write-content">
+        <div class="comment-write-name">{{ comment_userName }}</div>
+        <div class="comment-write-body">
+          <input type="text" v-model="input_comment" placeholder="吐槽吧">
+        </div>
+        <div class="comment-btn-group">
+          <div class="comment-cancel-btn" @click="cancelComment">取消</div>
+          <div class="comment-submit-btn" @click="addArticle_comment">确定</div>
+        </div>
+      </div>
+      <div class="mask" @click="cancelComment"></div>
+
     </div>
   </div>
 </template>
@@ -46,13 +60,18 @@ export default {
   name: 'articleDetail',
   data () {
     return {
+//      flag
+      comment_flag: false,
+//      data
       article_id : '',
       article_title: '',
       article_body: '',
       article_praise: '',
       article_time: '',
       isUser: false,
-      comment_list: []
+      comment_list: [],
+      comment_userName: '匿名者',
+      input_comment: ''
     }
   },
   mounted: function () {
@@ -61,13 +80,13 @@ export default {
   methods: {
     articleLoad(){
       let that = this;
-      that.showArticleComment(that.$route.query.id);
       that.article_id = that.$route.query.id;
+      that.showArticleComment(that.$route.query.id);
     },
-    showArticleComment (article_id){
+    showArticleComment (){
       let that = this;
       //获取文章
-      axios.get(AJAXURL + 'show_articles?article_id=' + article_id).then(function (res) {
+      axios.get(AJAXURL + 'show_articles?article_id=' + that.article_id).then(function (res) {
         let response = res.data;
         if (response.error_num == 0){
           let date = response.list[0].fields.add_time.slice(0,10);
@@ -87,11 +106,11 @@ export default {
         }
       });
       //获取评论
-      axios.get(AJAXURL + 'show_comment?article_id=' + article_id).then(function (res) {
+      axios.get(AJAXURL + 'show_comment?article_id=' + that.article_id).then(function (res) {
         let response = res.data;
         if (response.error_num == 0){
           _.forEach(response.list, function (item) {
-            item.fields.add_time = item.fields.add_time.slice(0,10);
+            item.fields.add_time = item.fields.add_time.slice(5,10) + ' ' + item.fields.add_time.slice(11,16);
           });
           that.comment_list = response.list;
           console.log(that.comment_list)
@@ -114,19 +133,27 @@ export default {
           }
         })
       },
-    addArticle_comment(article_id) {
+    showAdd_comment (){
+      let that = this;
+      let username = sessionStorage.getItem("username");
+      if (username){
+        that.comment_userName = username;
+      }
+      that.comment_flag = true;
+    },
+    addArticle_comment() {
       let that = this;
       let username = sessionStorage.getItem("username");
       let data = {};
       if (username){
         data = {
-          article_id: article_id,
+          article_id: that.article_id,
           comment_body: that.input_comment,
           comment_username: sessionStorage.getItem("username")
         };
       }else {
         data = {
-          article_id: article_id,
+          article_id: that.article_id,
           comment_body: that.input_comment
         }
       }
@@ -137,10 +164,12 @@ export default {
         }).then(function (res) {
         let response = res.data;
         if (response.error_num == 0) {
-          that.showArticle_comment(article_id)
+          that.articleLoad();
+          that.comment_flag = false;
         } else {
           that.$toast.center('评论失败,' + response.msg);
           console.log(response['msg'])
+          that.comment_flag = false;
         }
       })
     },
@@ -156,8 +185,9 @@ export default {
         }
       })
     },
-    comment() {
-      alert("维护中,别乱动");
+    cancelComment(){
+      let that = this;
+      that.comment_flag = false;
     }
   }
 }
@@ -197,4 +227,23 @@ export default {
 
   .comment-time { float: right; font-size: 26px;}
 
+  /*写评论*/
+
+  .article-comment-write { background: #FFF; height: 300px;}
+
+  .article-comment-write .mask { width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: rgba(102, 102, 102, 0.59); }
+
+  .write-content { width: 100%; height: 200px; position: fixed; bottom: 100px; background: #FFF; z-index: 10; }
+
+  .comment-write-name { padding: 30px 32px;  font-size: 36px;  font-weight: bold;  color: #464c5b;  background: #FFF;}
+
+  .comment-write-body input { padding: 0 32px; width: 100%; height: 100px; margin: 0 auto; font-size: 28px;}
+
+  .comment-btn-group { display: flex; flex-direction: row; height: 100px; width: 100%; }
+
+  .comment-cancel-btn, .comment-submit-btn { width: 50%; height: 100px; line-height: 100px; text-align: center; font-size: 40px; color: #FFF;}
+
+  .comment-cancel-btn { background: #999999; }
+
+  .comment-submit-btn { background: #19be6b; }
 </style>

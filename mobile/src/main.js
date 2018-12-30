@@ -5,8 +5,13 @@ import App from './App.vue'
 import router from './router'
 import Toast from './components/toast/index.js'
 import './components/toast/toast.css';
-import store from './store'//引入store
+import Vuex from 'vuex'
+import store from './store/index.js'
+// import uploader from 'vue-easy-uploader'
+Vue.use(Vuex)
 
+// let store = new Vuex.Store({})
+// Vue.use(store)
 Vue.config.productionTip = false
 
 Vue.use(Toast);
