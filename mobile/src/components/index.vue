@@ -1,5 +1,8 @@
 <template>
   <div class="index">
+    <div class="happy-newyear">
+      HAPPY NEW YEAR
+    </div>
     <div class="index-title">
       WELCOME TO LIANGZHI
     </div>
@@ -51,6 +54,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .index { background: red; }
+
+  .happy-newyear { text-align: center; font-size: 50px; color: yellow; }
+
   .index-title { font-family: PingFangSC-Medium;  font-size: 40px;  color: #2D2D2D;  text-align: center; }
 
   .index-introduce { margin: 40px 32px; }
