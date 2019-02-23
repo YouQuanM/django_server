@@ -179,7 +179,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .marticle { width: 100%; background: #f8f8f9; }
+  .marticle { width: 100%; background: #f8f8f9; padding: 0 0 100px 0; }
 
   .marticle-group { margin: 10px 0; }
 
